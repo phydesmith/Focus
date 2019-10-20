@@ -4,15 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#AE051230"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/newTask"
+        android:layout_width="161dp"
+        android:layout_height="46dp"
+        android:background="#D81B60"
+        android:onClick="newTaskClick"
+        android:text="Create New Task"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.943" />
+
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="What to Focus on"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/_dynamic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ListView
+        android:id="@+id/focusTasks"
+        android:layout_width="407dp"
+        android:layout_height="429dp"
+        android:layout_marginBottom="84dp"
+        android:background="#D5252E7A"
+        app:layout_constraintBottom_toTopOf="@+id/newTask"
+        tools:layout_editor_absoluteX="2dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
