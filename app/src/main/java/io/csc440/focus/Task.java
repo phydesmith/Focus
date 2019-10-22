@@ -1,10 +1,13 @@
 package io.csc440.focus;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task implements Serializable {
+public class Task implements Parcelable {
 
     String name = "";
     Boolean priority = false;
@@ -13,8 +16,41 @@ public class Task implements Serializable {
 
     public Task(String name, Boolean priority, String date){
         this.name = name;
-        this.priority = priority;
         this.date = sdf.format(date);
+        this.priority = priority;
+    }
+
+    public Task(){
+        name = "";
+        date = "";
+        priority = false;
+    }
+
+    //Necessary boiler plate to avoid error with Parcelable implementation
+    public int describeContents(){return 0;}
+
+    //Writing task information to parcel
+    public void writeToParcel(Parcel dest, int flags){
+        dest.writeString(name);
+        dest.writeByte((byte) (priority ? 1 : 0));
+        dest.writeString(date);
+    }
+
+    //Takes in new Parcel to be read and unpacked.
+    public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>(){
+        public Task createFromParcel(Parcel in){
+            return new Task(in);
+        }
+        public Task[] newArray(int size){
+            return new Task[size];
+        }
+    };
+
+    //Reads new parcel for analysis.
+    private Task(Parcel in){
+        name = in.readString();
+        priority = in.readByte() != 0;
+        date = in.readString();
     }
 
     public String getName() {
@@ -33,9 +69,7 @@ public class Task implements Serializable {
         this.date = date;
     }
 
-    public Boolean getPriority() {
-        return priority;
-    }
+    public Boolean getPriority() { return priority; }
 
     public void setPriority(Boolean priority) {
         this.priority = priority;

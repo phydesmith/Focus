@@ -9,7 +9,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var tasks = ArrayList<Task>()
+    private var tasks = ArrayList<Task?>()
+    private var task_code = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //  Test comment for source control test.
@@ -25,10 +26,18 @@ class MainActivity : AppCompatActivity() {
 
     fun newTaskClick(view: View){
         val myIntent = Intent(this, focus_creation::class.java)
-        val bundle = Bundle()
-        bundle.putSerializable("tasks", tasks)
-        myIntent.putExtra("bundle", bundle)
-        startActivity(myIntent)
+        startActivityForResult(myIntent, 1)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, myIntent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, myIntent)
+        if(requestCode == task_code){
+            if(myIntent != null){
+                val bundle = myIntent.getBundleExtra("bundle")
+                var newTask = bundle.getParcelable<Task>("newTask")
+                tasks.add(newTask)
+            }
+        }
     }
 
 

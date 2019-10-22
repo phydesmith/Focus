@@ -1,5 +1,7 @@
 package io.csc440.focus
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,7 +16,9 @@ class focus_creation : AppCompatActivity() {
     /*private var tasks = intent.getBundleExtra("tasks")
     val myIntent = getIntent()
     val bundle = myIntent.getBundleExtra("bundle")
+    var tasks = bundle.getParcelableArrayList<Task>("tasks")
     */
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,13 +34,23 @@ class focus_creation : AppCompatActivity() {
         onBackPressed()
     }
 
-    fun createTaskClick(view: View) : Task {
+    fun createTaskClick(view: View){
         val title = findViewById<EditText>(R.id.taskTitle).toString()
         val date = findViewById<CalendarView>(R.id.taskDate).date.toString()
         val priority = findViewById<Switch>(R.id.prioritySwitch).isChecked
 
-        return Task(title, priority, date)
+        var newTask = Task(title,priority,date)
 
+        //tasks?.add(newTask)
+
+        val bundle = Bundle()
+        bundle.putParcelable("newTask", newTask)
+        val myIntent = Intent()
+        myIntent.putExtra("bundle", bundle)
+
+
+        setResult(Activity.RESULT_OK, myIntent)
+        finish()
     }
 }
 
