@@ -16,7 +16,7 @@ public class Task implements Parcelable {
 
     public Task(String name, Boolean priority, String date){
         this.name = name;
-        this.date = sdf.format(date);
+        this.date = date;
         this.priority = priority;
     }
 
@@ -74,4 +74,9 @@ public class Task implements Parcelable {
     public void setPriority(Boolean priority) {
         this.priority = priority;
     }
+
+    public String toString(){
+        return "name" + name + " date: " + date + " priority: " + priority;
+    }
+
 }

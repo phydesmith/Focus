@@ -1,10 +1,13 @@
 package io.csc440.focus
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.Switch
@@ -25,7 +28,8 @@ class focus_creation : AppCompatActivity() {
         setContentView(R.layout.activity_focus_creation)
 
         createButton.setOnClickListener(){
-
+            val create = findViewById<Button>(R.id.createButton)
+            createTaskClick(create)
         }
 
     }
@@ -35,7 +39,10 @@ class focus_creation : AppCompatActivity() {
     }
 
     fun createTaskClick(view: View){
-        val title = findViewById<EditText>(R.id.taskTitle).toString()
+
+        Log.d("mb", "button clicked")
+
+        val title = findViewById<EditText>(R.id.taskTitle).text.toString()
         val date = findViewById<CalendarView>(R.id.taskDate).date.toString()
         val priority = findViewById<Switch>(R.id.prioritySwitch).isChecked
 
@@ -50,7 +57,9 @@ class focus_creation : AppCompatActivity() {
 
 
         setResult(Activity.RESULT_OK, myIntent)
-        finish()
+
+
+        this.finish()
     }
 }
 
