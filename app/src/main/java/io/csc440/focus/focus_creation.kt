@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.Switch
 import kotlinx.android.synthetic.main.activity_focus_creation.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class focus_creation : AppCompatActivity() {
 
@@ -35,6 +36,12 @@ class focus_creation : AppCompatActivity() {
             createTaskClick(create)
         }
 
+        taskDate.setOnDateChangeListener{ view, year, month, dayOfMonth ->
+            var c = Calendar.getInstance()
+            c.set(year, month, dayOfMonth)
+            taskDate.setDate(c.timeInMillis)
+        }
+
     }
 
     fun backButtonClick(view: View){
@@ -50,28 +57,23 @@ class focus_creation : AppCompatActivity() {
         val date = findViewById<CalendarView>(R.id.taskDate).date.toString()
         val priority = findViewById<Switch>(R.id.prioritySwitch).isChecked
 
-        // DB Stuff
+
+        // -------- DB Stuff --------
+        // prep vars for insertion
+        var dbDate = findViewById<CalendarView>(R.id.taskDate).date
+        var dbDescription = taskTitle.text
+        var dbPriority = 0;
+        if (prioritySwitch.isChecked){
+            dbPriority = 1;
+        }
         val database_name = "tasks"
         val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)
-        myDb.execSQL("INSERT INTO tasks (description) VALUES ('$title');")
-
-
-        var resultSet = myDb.rawQuery("SELECT * FROM Tasks", null)
-        resultSet.moveToFirst()
-        var descriptionIndex = resultSet.getColumnIndex("description")
-        //var dateIndex = resultSet.getColumnIndex("date")
-        //var priIndex = resultSet.getColumnIndex("priority")
-        var description = resultSet.getString(descriptionIndex)
-        //var priorityOP = resultSet.getString(priIndex)
-        //var date = resultSet
-        Log.d("dataBasee", "HERE")
-        System.out.println("HERE MOFO: " + description + " PRIORITY? ")// + priorityOP)
-
+        myDb.execSQL("INSERT INTO tasks (description, date, priority) VALUES ('$dbDescription', $dbDate, $dbPriority) ;")
         myDb.close()
-        // end DB Stuff
+        // -------- END DB Stuff --------
+
 
         var newTask = Task(title,priority,date)
-
         //tasks?.add(newTask)
 
         val bundle = Bundle()

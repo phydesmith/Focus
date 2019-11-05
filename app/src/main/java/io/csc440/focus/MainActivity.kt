@@ -11,40 +11,40 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
-    private var tasks = ArrayList<Task?>()
+
     private var tasks_st = ArrayList<String>()
-    private var task_code = 1
     private lateinit var myAdapter : ArrayAdapter<String>
+    private var priorities = ArrayList<String>()
+    private lateinit var myPriorityAdapter :ArrayAdapter<String>
+
+    private var tasks = ArrayList<Task?>()
+    private var task_code = 1
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //  Test comment for source control test.
-
-
-        //  Data base stuff
-        var created = false;
-        val database_name = "tasks"
-        val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)
-
-
-        if (!created) {
-            myDb.execSQL("CREATE TABLE IF NOT EXISTS Tasks (description VARCHAR(100), date DATE, priority BOOLEAN);")
-            created = true;
-            myDb.close()
-        }
-
-        //lateinit var focusTasks.adapter = myAdapter
-        //  2nd test comment for guide.
-         myAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasks_st)
-
-         //var listview:ListView = findViewById<ListView>(R.id.focusTasks)
-         focusTasks?.adapter = myAdapter
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //  DB Creation
+        val database_name = "tasks"
+        val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)
+        myDb.execSQL("CREATE TABLE IF NOT EXISTS Tasks (description TEXT, date INTEGER, priority INTEGER);")
+        myDb.execSQL("DELETE FROM Tasks;"); // deletes all tasks for testing purposes
+        myDb.close()
+
+        // Adapter Stuff
+        tasks_st.add(""); // so 0 index exists for add task method
+        myAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, tasks_st)
+        focusTasks.adapter = myAdapter
+
+        myPriorityAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, priorities)
+        priorityTasks.adapter = myPriorityAdapter
+
     }
 
 
@@ -53,25 +53,85 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(myIntent, 1)
     }
 
-
-    fun printTasks(view: View){
+    fun updateTasks(){
         val database_name = "tasks"
         val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)
-        var resultSet = myDb.rawQuery("SELECT * FROM Tasks", null)
-        resultSet.moveToFirst()
-        var descriptionIndex = resultSet.getColumnIndex("description")
-        //var dateIndex = resultSet.getColumnIndex("date")
-        //var priIndex = resultSet.getColumnIndex("priority")
-        var description = resultSet.getString(descriptionIndex)
-        //var priorityOP = resultSet.getString(priIndex)
-        //var date = resultSet
-        Log.d("dataBasee", "HERE")
-        System.out.println("HERE MOFO: " + description + " PRIORITY? ")// + priorityOP)
+        var nextTask = myDb.rawQuery("SELECT description, MIN(date), priority, date FROM Tasks", null)
+
+        nextTask.moveToFirst()
+        var focus = Task(
+            nextTask.getString( nextTask.getColumnIndex("description") ),
+            nextTask.getInt(    nextTask.getColumnIndex("priority") ),
+            nextTask.getLong(   nextTask.getColumnIndex("date"))
+        )
+
+        tasks_st.set(0, focus.lToString())
+        myAdapter.notifyDataSetChanged()
+        Log.d("tasks", tasks_st.get(0));
+
+        // close
+        nextTask.close()
+        myDb.close()
+
+    }
+
+    fun updateTasksClick(view: View){
+        val database_name = "tasks"
+        val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)
+        var nextTask = myDb.rawQuery("SELECT description, MIN(date), priority, date FROM Tasks", null)
+        nextTask.moveToFirst()
+
+
+        var focus = Task(
+            nextTask.getString( nextTask.getColumnIndex("description") ),
+            nextTask.getInt(    nextTask.getColumnIndex("priority") ),
+            nextTask.getLong(   nextTask.getColumnIndex("date"))
+        )
+
+        tasks_st.set(0, focus.lToString())
+        myAdapter.notifyDataSetChanged()
+        Log.d("tasks", tasks_st.get(0));
+
+        nextTask.close()
+        myDb.close()
+
+    }
+
+    fun updatePriorityTasks(){
+        priorities.clear();
+
+        val database_name = "tasks"
+        val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)
+        var priorityTasks = myDb.rawQuery("SELECT description, priority, date FROM Tasks WHERE priority == 1", null)
+
+        priorityTasks.moveToFirst()
+
+        while (!priorityTasks.isAfterLast) {
+            var priority = Task(
+                priorityTasks.getString( priorityTasks.getColumnIndex("description") ),
+                priorityTasks.getInt(    priorityTasks.getColumnIndex("priority") ),
+                priorityTasks.getLong(   priorityTasks.getColumnIndex("date"))
+            )
+
+            priorities.add(priority.lToString())
+            Log.d("tasks", priority.lToString())
+            priorityTasks.moveToNext()
+        }
+        myPriorityAdapter.notifyDataSetChanged()
+
+        // close
+        priorityTasks.close()
+        myDb.close()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, myIntent: Intent?) {
         Log.d("main", "IN MAIN")
         super.onActivityResult(requestCode, resultCode, myIntent)
+
+        updateTasks()
+        updatePriorityTasks()
+
+        /*
         if(requestCode == task_code){
             if(myIntent != null){
                 val bundle = myIntent.getBundleExtra("bundle")
@@ -85,6 +145,8 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+
+         */
     }
 
 

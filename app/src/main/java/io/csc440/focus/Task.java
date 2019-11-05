@@ -13,11 +13,24 @@ public class Task implements Parcelable {
     Boolean priority = false;
     SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
     String date = "";
+    Date lDate;
 
     public Task(String name, Boolean priority, String date){
         this.name = name;
         this.date = date;
         this.priority = priority;
+
+    }
+
+    public Task(String name, int priority, Long lDate){
+        this.name = name;
+        this.date = "";
+        this.lDate = new Date(lDate);
+        if (priority == 1){
+            this.priority = true;
+        }
+
+
     }
 
     public Task(){
@@ -76,7 +89,11 @@ public class Task implements Parcelable {
     }
 
     public String toString(){
-        return "name" + name + " date: " + date + " priority: " + priority;
+        return "name: " + name + " date: " + date + " priority: " + priority;
+    }
+
+    public  String lToString(){
+        return toString() + " " +  lDate;
     }
 
 }
