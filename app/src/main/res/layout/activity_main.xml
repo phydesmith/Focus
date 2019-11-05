@@ -43,14 +43,4 @@
         android:background="#00E9E3E3"
         app:layout_constraintBottom_toTopOf="@+id/newTask"
         tools:layout_editor_absoluteX="2dp" />
-
-    <Button
-        android:id="@+id/dbTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        android:onClick="printTasks"
-        app:layout_constraintEnd_toStartOf="@+id/newTask"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/focusTasks" />
 </androidx.constraintlayout.widget.ConstraintLayout>
