@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class focus_creation : AppCompatActivity() {
 
+
     /*private var tasks = intent.getBundleExtra("tasks")
     val myIntent = getIntent()
     val bundle = myIntent.getBundleExtra("bundle")
@@ -26,6 +27,8 @@ class focus_creation : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_focus_creation)
+
+
 
         createButton.setOnClickListener(){
             val create = findViewById<Button>(R.id.createButton)
@@ -40,11 +43,32 @@ class focus_creation : AppCompatActivity() {
 
     fun createTaskClick(view: View){
 
-        Log.d("mb", "button clicked")
+
+        Log.d("CREATE", "button clicked")
 
         val title = findViewById<EditText>(R.id.taskTitle).text.toString()
         val date = findViewById<CalendarView>(R.id.taskDate).date.toString()
         val priority = findViewById<Switch>(R.id.prioritySwitch).isChecked
+
+        // DB Stuff
+        val database_name = "tasks"
+        val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)
+        myDb.execSQL("INSERT INTO tasks (description) VALUES ('$title');")
+
+
+        var resultSet = myDb.rawQuery("SELECT * FROM Tasks", null)
+        resultSet.moveToFirst()
+        var descriptionIndex = resultSet.getColumnIndex("description")
+        //var dateIndex = resultSet.getColumnIndex("date")
+        //var priIndex = resultSet.getColumnIndex("priority")
+        var description = resultSet.getString(descriptionIndex)
+        //var priorityOP = resultSet.getString(priIndex)
+        //var date = resultSet
+        Log.d("dataBasee", "HERE")
+        System.out.println("HERE MOFO: " + description + " PRIORITY? ")// + priorityOP)
+
+        myDb.close()
+        // end DB Stuff
 
         var newTask = Task(title,priority,date)
 
