@@ -7,6 +7,16 @@
     android:background="#AE051230"
     tools:context=".MainActivity">
 
+    <ListView
+        android:id="@+id/priorityTasks"
+        android:layout_width="416dp"
+        android:layout_height="183dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/newTask"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/focusTasks" />
+
     <Button
         android:id="@+id/newTask"
         android:layout_width="161dp"
@@ -37,10 +47,21 @@
 
     <ListView
         android:id="@+id/focusTasks"
-        android:layout_width="407dp"
-        android:layout_height="429dp"
-        android:layout_marginBottom="84dp"
-        android:background="#D5252E7A"
-        app:layout_constraintBottom_toTopOf="@+id/newTask"
-        tools:layout_editor_absoluteX="2dp" />
+        android:layout_width="409dp"
+        android:layout_height="216dp"
+        android:layout_marginTop="48dp"
+        android:background="#00E9E3E3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/dbTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="updateTasksClick"
+        android:text="update"
+        app:layout_constraintEnd_toStartOf="@+id/newTask"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/newTask" />
 </androidx.constraintlayout.widget.ConstraintLayout>
