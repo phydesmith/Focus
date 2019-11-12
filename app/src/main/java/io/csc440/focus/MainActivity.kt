@@ -53,6 +53,11 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(myIntent, 1)
     }
 
+    fun toPomodoroClick(view: View){
+        val myIntent = Intent(this, pomodoro::class.java)
+        startActivity(myIntent)
+    }
+
     fun updateTasks(){
         val database_name = "tasks"
         val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)

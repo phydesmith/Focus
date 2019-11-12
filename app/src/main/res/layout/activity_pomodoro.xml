@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/mainHeader"
         android:layout_width="203dp"
         android:layout_height="64dp"
         android:gravity="center"
@@ -52,7 +52,7 @@
         android:text="Iteration I"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/mainHeader" />
 
     <CheckBox
         android:id="@+id/checkBox4"
@@ -71,15 +71,24 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/pomoStart" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/pomoStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reset Timer"
+        android:text="Start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkBox4" />
+
+    <Button
+        android:id="@+id/pomoBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="pomoBackButtonClick"
+        android:text="Back"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        tools:layout_editor_absoluteX="4dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

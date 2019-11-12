@@ -32,7 +32,7 @@
         app:layout_constraintVertical_bias="0.943" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/mainHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -53,7 +53,7 @@
         android:background="#00E9E3E3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/mainHeader" />
 
     <Button
         android:id="@+id/dbTest"
@@ -63,5 +63,15 @@
         android:text="update"
         app:layout_constraintEnd_toStartOf="@+id/newTask"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/newTask" />
+
+    <Button
+        android:id="@+id/toPomo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="toPomodoroClick"
+        android:text="Pomodoro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newTask"
         app:layout_constraintTop_toTopOf="@+id/newTask" />
 </androidx.constraintlayout.widget.ConstraintLayout>
