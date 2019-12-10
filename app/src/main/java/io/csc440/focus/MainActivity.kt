@@ -64,13 +64,16 @@ class MainActivity : AppCompatActivity() {
         var nextTask = myDb.rawQuery("SELECT description, MIN(date), priority, date FROM Tasks", null)
 
         nextTask.moveToFirst()
+        Log.d("afterDelete", nextTask.toString())
+
         var focus = Task(
             nextTask.getString( nextTask.getColumnIndex("description") ),
             nextTask.getInt(    nextTask.getColumnIndex("priority") ),
             nextTask.getLong(   nextTask.getColumnIndex("date"))
         )
+        Log.d("afterDelete", focus.toString())
 
-        tasks_st.set(0, focus.lToString())
+        tasks_st[0] = focus.lToString()
         myAdapter.notifyDataSetChanged()
         Log.d("tasks", tasks_st.get(0));
 
@@ -127,6 +130,30 @@ class MainActivity : AppCompatActivity() {
         // close
         priorityTasks.close()
         myDb.close()
+    }
+
+    fun deleteTaskClick(view: View){
+
+
+        tasks_st.removeAt(0)
+
+        val database_name = "tasks"
+        val myDb = openOrCreateDatabase(database_name, Context.MODE_PRIVATE, null)
+        var nextTask = myDb.rawQuery("SELECT description, MIN(date), priority, date FROM Tasks", null)
+        nextTask.moveToFirst()
+
+        var desc = nextTask.getString(nextTask.getColumnIndex("description"))
+        Log.d("var", desc)
+        Log.d("countBefore", nextTask.toString())
+        myDb.execSQL("DELETE FROM Tasks WHERE description LIKE '$desc' ")
+        Log.d("after", "after delete")
+        Log.d("countAfter", nextTask.toString())
+        //myAdapter.notifyDataSetChanged()
+        myDb.close()
+        tasks_st.add("")
+        updateTasks()
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, myIntent: Intent?) {
