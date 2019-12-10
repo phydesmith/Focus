@@ -152,6 +152,7 @@ class MainActivity : AppCompatActivity() {
         myDb.close()
         tasks_st.add("")
         updateTasks()
+        updatePriorityTasks()
 
 
     }
